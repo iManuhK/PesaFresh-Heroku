@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+
+    {% if title %}
+        <title>PesaFresh - {{ title }}</title>
+    {% else %}
+        <title>PesaFresh</title>
+    {% endif %}
+</head>
+<body>
+    <header class="site-header">
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <a class="navbar-brand" href="/">PesaFresh</a>
+        <div class="container">
+         
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="search">
+              <input type="text" placeholder="Search..." />
+            </div>
+            <div class="navbar-nav mr-auto">
+              <a class="nav-item nav-link" href="{{ url_for('main.home') }}">Home</a>
+              <a class="nav-item nav-link" href="{{ url_for('main.about') }}">About</a>
+            </div>
+            <!-- Navbar Right Side -->
+            <div class="navbar-nav">
+              {% if current_user.is_authenticated %}
+                <a class="nav-item nav-link" href="{{ url_for('transactions.transactions_history') }}">Dashboard</a>
+                <a class="nav-item nav-link" href="{{ url_for('users.account') }}">Account</a>
+                <a class="nav-item nav-link" href="{{ url_for('users.logout') }}">Logout</a>
+              {% else %}
+                <a class="nav-item nav-link" href="{{ url_for('users.login') }}">Login</a>
+                <a class="nav-item nav-link" href="{{ url_for('users.register') }}">Register</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-12">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+          {% block content %}{% endblock %}
+        </div>
+      </div>
+    </main>
+    <footer class="footer-container">
+      <!-- start of the top footer  -->
+      <div class="footer-top">
+          <div class="footer-top-column">
+            <div class="footer-logo">
+              <img src="./static/images/image.png" alt="logo" />
+            </div>
+          <div class="footer-subscribe">
+                  <h5 class="footer-subscribe-title">Subscribe to our newsletter and get 15% off your first credit.</h5>
+                  <div>
+                      <form class="footer-subscribe-form">
+                        <input type="email" class="footer-subscribe-input" placeholder="Your Email" />
+                        <button class="footer-subscribe-button" type="submit">Subscribe</button>
+                      </form>
+                      <div class="footer-subscribe-disclaimer">
+                        <input type='checkbox' class="footer-checkbox" defaultValue={true}/>
+                        <p class="footer-subscribe-agreement">I agree to receive PesaFresh newsletters</p>
+                      </div>
+                  </div>
+              </div>
+              <div class="footer-social-row">
+                <ul class="footer-social-list">
+                  <FontAwesomeIcon icon={faFacebook} /> 
+                  <FontAwesomeIcon icon={faXTwitter} />
+                  <FontAwesomeIcon icon={faInstagram} />
+                  <FontAwesomeIcon icon={faLinkedin} />
+                </ul>
+              </div>
+          </div>
+              <div class="footer-top-column">
+                      <div class="footer-links-row">
+                          <ul class="footer-links-list">
+                              <li><a class="footer-link" href="/#">About Us</a></li>
+                              <li><a class="footer-link" href="/#about-us-mission-vision">Team </a></li>
+                              <li><a class="footer-link" href="/#">Blog</a></li>
+                              <li><a class="footer-link" href="/#">Terms of Use</a></li>
+                          </ul>
+                      </div>
+                      <div class="footer-address">
+                       <div class="street">
+                        <FontAwesomeIcon icon={faLocationDot} />
+                        <p>123 Street, Nairobi, Kenya</p>
+                       </div>
+                       <div class="phone">
+                        <FontAwesomeIcon icon={faPhone} />
+                        <p>+254 000 000</p>
+                       </div>
+                       <div class="email">
+                        <FontAwesomeIcon icon={faEnvelope} />
+                        <p>info@pesafresh.com</p>
+                       </div>
+                      </div>
+              </div>
+              <div class="footer-top-column">
+                  <h5 class="footer-links-title">Need Help?</h5>
+                  <ul class="footer-links-list">
+                      <li><a class="footer-link" href="/#">Contact Us</a></li>
+                      <li><a class="footer-link" href="/#">FAQs</a></li>
+                      <li><a class="footer-link" href="/#">Offers &amp; Kits</a></li>
+                      <li><a class="footer-link" href="/#">Get the app</a></li>
+                  </ul>
+              </div>
+      </div>
+      <!-- start of the bottom footer -->
+    <div class="footer-bottom">
+          <div class="footer-bottom-column">
+              <div class="footer-bottom-left">
+                  <p class="footer-bottom-text">© 2024 copyright by <a class="footer-bottom-link" href="/#">PesaFresh.com</a></p>
+              </div>
+          </div>
+          <div class="footer-bottom-column">
+                  <ul class="footer-bottom-right">
+                      <li class="footer-bottom-item"><a href="/#" class="footer-bottom-link">Privacy &amp; Policy</a></li>
+                      <li class="footer-bottom-item"><a href="/#" class="footer-bottom-link">FAQs</a></li>
+                  </ul>
+          </div>
+    </div>
+    </footer>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>

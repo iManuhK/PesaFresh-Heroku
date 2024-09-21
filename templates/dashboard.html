@@ -1,0 +1,112 @@
+{% extends "layout.html" %}
+{% block content %}
+  <div class="identity-section">
+      <h2 class="account-heading">Welcome <span>{{ current_user.username }}.</span></h2>
+  </div>
+  <br>
+  <div class="dashboard-wrapper">
+      <div class="transaction-profile-section">
+        <div class="wallet credit-section">
+          <h2>Your Wallet</h2>
+          <p>Your current balance is Ksh. <span>{{ current_user.wallet_balance }}</span></p>
+        </div>
+        <div class="credit-limit credit-section">
+          <h2>Credit Section</h2>
+          <p>Your credit limit is Ksh. <span> {{ current_user.credit_limit }}
+        </div>
+      </div>
+
+    <div class="transactions-section">
+      <h2>Production Data</h2>
+      <table class="styled-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Product Name</th>
+            <th>Description</th>
+            <th>Quantity (kgs)</th>
+            <th>Cost per unit</th>
+            <th>Total Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+              {% if transaction.transaction_type == 'production' %}
+                <tr>
+                  <td>{{ transaction.transaction_date.strftime('%d-%m-%Y') }}</td>
+                  <td>{{ transaction.product }}</td>
+                  <td>{{ transaction.description }}</td>
+                  <td>{{ transaction.kgs }}</td>
+                  <td>{{ transaction.cost_per_kg }}</td>
+                  <td>{{ transaction.total_amount }}</td>
+                </tr>
+              {% endif %}
+            {% endfor %}
+        </tbody>
+      </table>      
+      <div class="create-data-buttons">
+        <a href="{{ url_for('transactions.production') }}">
+          <button class="btn primary-btn">Produce</button>
+        </a>    
+      </div>
+
+      <h2>Borrowing History</h2>
+      <table class="styled-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Amount Borrowed</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for transaction in transactions %}
+            {% if transaction.transaction_type == 'borrow' %}
+              <tr>
+                <td>{{ transaction.transaction_date.strftime('%d-%m-%Y') }}</td>
+                <td>{{ transaction.description }}</td>
+                <td>{{ transaction.borrowed_amount }}</td>
+              </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <div class="create-data-buttons">
+        <a href="{{ url_for('transactions.borrow') }}">
+          <button class="btn primary-btn">Borrow</button>
+        </a>    
+      </div>
+
+      <h2>Wallet Statement History</h2>
+      <table class="styled-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Amount Withdrawn</th>
+            <th>Balance</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for transaction in transactions %}
+            {% if transaction.transaction_type == 'withdrawal' %}
+              <tr>
+                <td>{{ transaction.transaction_date.strftime('%d-%m-%Y') }}</td>
+                <td>{{ transaction.description }}</td>
+                <td>{{ transaction.withdraw_amount }}</td>
+                <td>{{ transaction.wallet_balance }}</td>
+              </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <div class="create-data-buttons">
+        <a href="{{ url_for('transactions.withdraw') }}">
+          <button class="btn primary-btn">Withdraw</button>
+        </a>    
+      </div>
+    </div>
+</div>
+{% endblock content %}
